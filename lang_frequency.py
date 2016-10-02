@@ -35,7 +35,7 @@ def get_top_ten(popular_words_dict):
 
 
 if __name__ == '__main__':
-    file = 'C:/Users/Jimbo/Desktop/1.txt' #input('path to file: ')
+    file = input('path to file: ')
     text = load_data(file)
     clear_text = remove_punct_marks(text)
     popular_words_dict = get_words_frequency(clear_text)
