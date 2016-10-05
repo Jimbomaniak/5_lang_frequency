@@ -23,7 +23,7 @@ def get_words_frequency(text):
 
 
 def top_words_print(words_dict_counter, top_number):
-    for num, word_freq in enumerate(words_list_counter.most_common(top_number)):
+    for num, word_freq in enumerate(words_dict_counter.most_common(top_number)):
         print('{0}. {1} - {2} times in text'.format(num+1, *word_freq))
 
 
