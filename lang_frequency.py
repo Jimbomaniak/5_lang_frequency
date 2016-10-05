@@ -1,44 +1,36 @@
-def load_data(filepath):
+import collections
+import re
+
+def load_text_file(filepath):
     try:
-        with open(filepath, mode='r', encoding='utf-8') as file:
-            text = file.read()
+        with open(filepath, mode='r', encoding='utf-8') as txt_file:
+            text = txt_file.read()
         return text
     except FileNotFoundError:
         return 'No such file in directory'
 
 def remove_punct_marks(text):
-    clear_text = ''
-    for symbol in text:
-        if symbol not in (',.;:!?+-=_)(][}{/\%^@#$&*|`~><–"0123456789'):
-            clear_text += symbol.lower()
+    clear_text = re.sub(u'[^А-Яа-яA-Za-z\s]*', u'', text)
     return clear_text
 
 
 def get_words_frequency(text):
-    words_stat = {}
-    counter = 1
+    words_stat = collections.Counter()
     words_list = text.split()
     for word in words_list:
-        if word not in words_stat:
-            words_stat[word] = counter
-        else:
-            words_stat[word] += 1
+        words_stat[word] += 1
     return words_stat
 
-def get_top_ten(popular_words_dict):
-    top_ten_words=[]
-    for popword in range(10):
-        word = max(popular_words_dict, key=popular_words_dict.get)
-        top_ten_words.append([word, popular_words_dict[word]])
-        popular_words_dict.pop(word)
-    return top_ten_words
+
+def top_words_print(words_list_counter):
+    TOP_TEN = 10
+    for num, word_freq in enumerate(words_list_counter.most_common(TOP_TEN)):
+        print('{0}. {1} - {2} times in text'.format(num+1, *word_freq))
 
 
 if __name__ == '__main__':
-    file = input('path to file: ')
-    text = load_data(file)
+    txt_file = input('path to file: ')
+    text = load_text_file(txt_file)
     clear_text = remove_punct_marks(text)
     popular_words_dict = get_words_frequency(clear_text)
-    top_ten_words = get_top_ten(popular_words_dict)
-    for num, word in enumerate(top_ten_words):
-        print('{0}. {1} - {2} times in text'.format(num+1,*word))
+    top_words_print(popular_words_dict)
